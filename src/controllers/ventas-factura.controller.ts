@@ -39,7 +39,7 @@ export class VentasFacturaController {
     },
   })
   async get(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('filter') filter?: Filter<Factura>,
   ): Promise<Factura> {
     return this.ventasRepository.factura(id).get(filter);
@@ -61,7 +61,7 @@ export class VentasFacturaController {
           schema: getModelSchemaRef(Factura, {
             title: 'NewFacturaInVentas',
             exclude: ['id'],
-            optional: ['idventas']
+            optional: ['idventa']
           }),
         },
       },
@@ -79,7 +79,7 @@ export class VentasFacturaController {
     },
   })
   async patch(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id:number,
     @requestBody({
       content: {
         'application/json': {
@@ -102,7 +102,7 @@ export class VentasFacturaController {
     },
   })
   async delete(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Factura)) where?: Where<Factura>,
   ): Promise<Count> {
     return this.ventasRepository.factura(id).delete(where);

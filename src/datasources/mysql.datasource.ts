@@ -9,7 +9,7 @@ const config = {
   port: 3306,
   user: 'root',
   password: '',
-  database: 'mascotafeliz_db '
+  database: 'mascotafeliz_db'
 };
 
 // Observe application's life cycle to disconnect the datasource when

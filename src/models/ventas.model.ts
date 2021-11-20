@@ -1,5 +1,4 @@
-import {Entity, model, property, belongsTo, hasOne} from '@loopback/repository';
-import {Asesor} from './asesor.model';
+import {Entity, model, property, hasOne} from '@loopback/repository';
 import {Factura} from './factura.model';
 
 @model()
@@ -9,7 +8,7 @@ export class Ventas extends Entity {
     id: true,
     generated: true,
   })
-  id?: string;
+  id?: number;
 
   @property({
     type: 'string',
@@ -29,10 +28,30 @@ export class Ventas extends Entity {
   })
   idproducto: string;
 
-  @belongsTo(() => Asesor, {name: 'idaseso'})
+  @property({
+    type: 'string',
+    required: true,
+  })
+  idcliente: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
   idasesor: string;
 
-  @hasOne(() => Factura, {keyTo: 'idventas'})
+  @property({
+    type: 'string',
+    required: true,
+  })
+  idproductooservicio: string;
+
+  @property({
+    type: 'string',
+  })
+  idfactura?: string;
+
+  @hasOne(() => Factura, {keyTo: 'idventa'})
   factura: Factura;
 
   constructor(data?: Partial<Ventas>) {

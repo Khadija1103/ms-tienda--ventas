@@ -16,70 +16,70 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Asesor,
+  Factura,
   Ventas,
 } from '../models';
-import {AsesorRepository} from '../repositories';
+import {FacturaRepository} from '../repositories';
 
-export class AsesorVentasController {
+export class FacturaVentasController {
   constructor(
-    @repository(AsesorRepository) protected asesorRepository: AsesorRepository,
+    @repository(FacturaRepository) protected facturaRepository: FacturaRepository,
   ) { }
 
-  @get('/asesors/{id}/ventas', {
+  @get('/facturas/{id}/ventas', {
     responses: {
       '200': {
-        description: 'Array of Asesor has many Ventas',
+        description: 'Factura has one Ventas',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Ventas)},
+            schema: getModelSchemaRef(Ventas),
           },
         },
       },
     },
   })
-  async find(
-    @param.path.string('id') id: string,
+  async get(
+    @param.path.string('id') id: number,
     @param.query.object('filter') filter?: Filter<Ventas>,
-  ): Promise<Ventas[]> {
-    return this.asesorRepository.ventas(id).find(filter);
+  ): Promise<Ventas> {
+    return this.facturaRepository.ventas(id).get(filter);
   }
 
-  @post('/asesors/{id}/ventas', {
+  @post('/facturas/{id}/ventas', {
     responses: {
       '200': {
-        description: 'Asesor model instance',
+        description: 'Factura model instance',
         content: {'application/json': {schema: getModelSchemaRef(Ventas)}},
       },
     },
   })
   async create(
-    @param.path.string('id') id: typeof Asesor.prototype.id,
+    @param.path.string('id') id: typeof Factura.prototype.id,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Ventas, {
-            title: 'NewVentasInAsesor',
+            title: 'NewVentasInFactura',
             exclude: ['id'],
-            optional: ['idasesor']
+            optional: ['idfactura']
           }),
         },
       },
     }) ventas: Omit<Ventas, 'id'>,
   ): Promise<Ventas> {
-    return this.asesorRepository.ventas(id).create(ventas);
+    return this.facturaRepository.ventas(id).create(ventas);
   }
 
-  @patch('/asesors/{id}/ventas', {
+  @patch('/facturas/{id}/ventas', {
     responses: {
       '200': {
-        description: 'Asesor.Ventas PATCH success count',
+        description: 'Factura.Ventas PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async patch(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @requestBody({
       content: {
         'application/json': {
@@ -90,21 +90,21 @@ export class AsesorVentasController {
     ventas: Partial<Ventas>,
     @param.query.object('where', getWhereSchemaFor(Ventas)) where?: Where<Ventas>,
   ): Promise<Count> {
-    return this.asesorRepository.ventas(id).patch(ventas, where);
+    return this.facturaRepository.ventas(id).patch(ventas, where);
   }
 
-  @del('/asesors/{id}/ventas', {
+  @del('/facturas/{id}/ventas', {
     responses: {
       '200': {
-        description: 'Asesor.Ventas DELETE success count',
+        description: 'Factura.Ventas DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
   })
   async delete(
-    @param.path.string('id') id: string,
+    @param.path.string('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Ventas)) where?: Where<Ventas>,
   ): Promise<Count> {
-    return this.asesorRepository.ventas(id).delete(where);
+    return this.facturaRepository.ventas(id).delete(where);
   }
 }
